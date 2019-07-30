@@ -1,0 +1,49 @@
+
+1. List the order number, order date, customer number, customer name (first and last), employee number, and employee name (first and last) of January 2013 orders placed by Colorado customers.
+
+
+select OrdNo, OrdDate, Customer.CustNo, concat(Customer.CustFirstName," ",Customer.CustLastName) as CustName, Employee.EmpNo, concat(Employee.EmpFirstName," ",Employee.EmpLastName) as EmpName from OrderTbl,Customer,Employee where OrderTbl.CustNo = Customer.CustNo and OrderTbl.EmpNo = Employee.EmpNo and OrdDate between '2013-01-01' and '2013-01-31' and Customer.CustState = 'CO';
+
+
+2. List the customer number, name (first and last), order number, order date, employee number, employee name (first and last), product number, product name, and order cost (OrdLine.Qty * ProdPrice) for products ordered on January 23, 2013, in which the order cost exceeds $150.
+
+
+select Customer.CustNo,concat(CustFirstName," ",CustLastName) as CustName, OrderTbl.OrdNo, Employee.EmpNo, concat(EmpFirstName," ",EmpLastName) as EmpName , Product.ProdNo, ProdName, OrdLine.Qty*ProdPrice as 'Order Cost' from Customer, OrderTbl, Employee, OrdLine,Product where OrderTbl.CustNo = Customer.CustNo and OrderTbl.EmpNo = Employee.EmpNo and OrderTbl.OrdNo = OrdLine.OrdNo and OrdLine.ProdNo = Product.ProdNo and OrdDate = '2013-01-23' and OrdLine.Qty*ProdPrice > 150;
+
+
+3. List the order number and total amount for orders placed on January 23, 2013. The total amount of an order is the sum of the quantity times the product price of each product on the order.
+
+
+select OrderTbl.OrdNo, sum(Qty*ProdPrice) as 'Total Cost' from OrderTbl,OrdLine,Product where OrderTbl.OrdNo = OrdLine.OrdNo and OrdLine.ProdNo = Product.ProdNo and OrdDate = '2013-01-23' group by OrderTbl.OrdNo;
+
+
+4. List the order number, order date, customer name (first and last), and total amount for orders placed on January 23, 2013. The total amount of an order is the sum of the quantity times the product price of each product on the order.
+
+
+select OrderTbl.OrdNo,OrdDate,concat(CustFirstName," ",CustLastName) as CustName, sum(Qty*ProdPrice) as 'Total Cost' from OrderTbl,OrdLine,Product, Customer where OrderTbl.OrdNo = OrdLine.OrdNo and OrdLine.ProdNo = Product.ProdNo and OrderTbl.CustNo = Customer.CustNo and OrdDate = '2013-01-23' group by OrderTbl.OrdNo;
+
+
+5. Insert yourself as a new row in the Customer table.
+
+
+insert into Customer values('C9999999','Rahul','Kotha','Phase 2','Hyderabad','TS','80127-8931',23123423.23);
+
+
+6. Insert an imaginary friend as a new row in the Employee table.
+
+
+insert into Employee values ( 'E9999999' , 'Sreetej' , 'Reddy', '(303)231-1243','sreetej@gmail.com','E8843211',0.09);
+
+
+7. Increase the price by 10 percent of products containing the words Ink Jet.
+
+
+update Product set ProdPrice = 1.1*ProdPrice where ProdName like '%Ink Jet%';
+
+
+8. Delete the new row added to the Customer table.
+
+delete from Customer where CustNo = 'C9999999';
+
+
+
