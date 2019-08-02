@@ -1,0 +1,47 @@
+
+1. Find out the PG-13 rated comedy movies. DO NOT use the film_list table.
+
+
+select film.film_id as Id , title from film, film_category, category where
+film.film_id = film_category.film_id and film_category.category_id = category.category_id and
+rating = 'PG-13' and name = 'Comedy';
+
+
+2. Find out the top 3 rented horror movies.
+
+
+select film.film_id as Id, title from film, film_category, category,
+inventory, rental where film.film_id = film_category.film_id and 
+film_category.category_id = category.category_id and film.film_id = inventory.film_id and
+inventory.inventory_id = rental.inventory_id and  name = 'Horror' group by film.film_id 
+order by count(*) desc limit 3;
+
+
+
+3. Find out the list of customers from India who have rented sports movies.
+
+
+select c.customer_id as id, concat(c.first_name," ",c.last_name) as name from 
+customer c,address a,city,country, rental r, inventory i,film f, film_category fc, category cat where
+c.customer_id = r.customer_id and r.inventory_id = i.inventory_id and f.film_id = i.film_id and 
+c.address_id = a.address_id and a.city_id = city.city_id and city.country_id = country.country_id and
+f.film_id = fc.film_id and fc.category_id = cat.category_id and name = 'sports' and country = 'India';
+
+
+4. Find out the list of customers from Canada who have rented “NICK WAHLBERG” movies.
+
+
+select c.customer_id as id, concat(c.first_name," ",c.last_name) as name from 
+customer c,address a,city,country, rental r, inventory i,film f, film_category fc, 
+category cat, film_actor fa, actor where c.customer_id = r.customer_id and
+r.inventory_id = i.inventory_id and f.film_id = i.film_id and c.address_id = a.address_id and
+a.city_id = city.city_id and city.country_id = country.country_id and f.film_id = fc.film_id and
+fc.category_id = cat.category_id and f.film_id= fa.film_id and fa.actor_id = actor.actor_id and
+country = 'Canada' and actor.first_name = 'NICK' and actor.last_name = 'WAHLBERG';
+
+
+5. Find out the number of movies in which “SEAN WILLIAMS” acted.
+
+select count(*) as 'No. of movies' from film_actor, actor where
+film_actor.actor_id = actor.actor_id and first_name = 'SEAN' and last_name = 'WILLIAMS'; 
+
